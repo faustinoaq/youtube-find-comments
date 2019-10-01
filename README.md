@@ -1,5 +1,5 @@
-# youtube-sergio-ramirez
+# Youtube Find Comments
 
-Encontrando a Sergio Ramirez con Youtube API
+Find a comment with Youtube API
 
-Tutorial para obtener `client_secret.json`: https://python.gotrained.com/youtube-api-extracting-comments/
+Tutorial to get `client_secret.json`: https://python.gotrained.com/youtube-api-extracting-comments/
