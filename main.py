@@ -29,11 +29,11 @@ def get_all_videos_comments(service, **kwargs):
     comments = []
     results = service.commentThreads().list(**kwargs).execute()
  
-    cantidad = 0
+    amount = 0
     answer = 's'
     while results:
         for item in results['items']:
-            cantidad = cantidad + 1
+            amount = amount + 1
             name = item['snippet']['topLevelComment']['snippet']['authorDisplayName']
             author_url = item['snippet']['topLevelComment']['snippet']['authorChannelUrl']
             if author_url == "http://www.youtube.com/channel/UCg7fzx4PEk96-7Ec2Ol2dJA": # Test Susan (Youtube CEO) Channel ID
@@ -45,8 +45,8 @@ def get_all_videos_comments(service, **kwargs):
                 link = f'https://www.youtube.com/watch?v={video_id}&lc={comment_id}'
                 comments.append([comment, link])
             else:
-                print(f'\rVerificando {cantidad}... {name}                 ', end='')
-                if cantidad % 100 == 0:
+                print(f'\rSearching {amount}... {name}                 ', end='')
+                if amount % 100 == 0:
                     answer = input('Too many search, youtube can block you, Wanna continue? (y/n): ')
                     if answer == 'n':
                         break
