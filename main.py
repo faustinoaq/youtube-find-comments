@@ -1,5 +1,5 @@
-# Script para buscar a Sergio Ramirez
-# Basado en el codigo de https://python.gotrained.com/youtube-api-extracting-comments/
+# Script to search someone's coments in Youtube
+# Inspired by https://python.gotrained.com/youtube-api-extracting-comments/
 
 import os
 import csv 
@@ -34,12 +34,10 @@ def get_all_videos_comments(service, **kwargs):
     while results:
         for item in results['items']:
             cantidad = cantidad + 1
-            # if item['snippet']['topLevelComment']['snippet']['authorDisplayName'] == "Segio Ramirez"
             name = item['snippet']['topLevelComment']['snippet']['authorDisplayName']
             author_url = item['snippet']['topLevelComment']['snippet']['authorChannelUrl']
-            # if author_url == "http://www.youtube.com/channel/UCIhTuBPZ4JkDh686LlL-cMA": # Test Faustino Aguilar Channel ID
-            if author_url == "http://www.youtube.com/channel/UCpMH1Q_bUgs0H2TS4daHeog": # Sergio Ramirez Channel ID
-                print("\nEncontrado!!!")
+            if author_url == "http://www.youtube.com/channel/UCg7fzx4PEk96-7Ec2Ol2dJA": # Test Susan (Youtube CEO) Channel ID
+                print("\nFound!!!")
                 video_id = item['snippet']['topLevelComment']['snippet']['videoId']
                 comment = item['snippet']['topLevelComment']['snippet']['textDisplay']
                 comment_id = item['snippet']['topLevelComment']['id']
@@ -49,7 +47,7 @@ def get_all_videos_comments(service, **kwargs):
             else:
                 print(f'\rVerificando {cantidad}... {name}                 ', end='')
                 if cantidad % 100 == 0:
-                    answer = input('Muchas busquedas, youtube te puede bloquear, Seguir buscando? (s/n): ')
+                    answer = input('Too many search, youtube can block you, Wanna continue? (y/n): ')
                     if answer == 'n':
                         break
 
@@ -65,9 +63,9 @@ def get_all_videos_comments(service, **kwargs):
     return comments
 
 def write_to_csv(comments):
-    with open('comentarios_de_sergio_ramirez.csv', 'a') as comments_file:
+    with open('example_file.csv', 'a') as comments_file:
         comments_writer = csv.writer(comments_file, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
-        comments_writer.writerow(['Canal', 'Comentario', 'Link'])
+        comments_writer.writerow(['Channel', 'Comment', 'Link'])
         for row in comments:
             comments_writer.writerow(list(row))
 
@@ -77,14 +75,14 @@ if __name__ == '__main__':
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     service = get_authenticated_service()
     while True:
-        canal_id = input('codigo de canal (ID): ')
-        busqueda = input('Termino de busqueda: ')
+        canal_id = input('Youtube Channel ID: ')
+        busqueda = input('Search term: ')
         final_result = []
         comments = get_all_videos_comments(service, part='snippet', allThreadsRelatedToChannelId=canal_id, searchTerms=busqueda, textFormat='plainText')
         final_result.extend([(canal_id, comment[0], comment[-1]) for comment in comments]) 
         write_to_csv(final_result)
-        print("\nListo! abre comentarios_de_sergio_ramirez.csv para ver resultados")
-        answer = input("Intentar denuevo? (s/n): ")
+        print("\nReady!, open the CSV file to see data")
+        answer = input("Try again? (y/n): ")
         if answer == "n":
             break
 
